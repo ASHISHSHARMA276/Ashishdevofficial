@@ -8,7 +8,6 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import pagefind from "astro-pagefind";
 
-// https://astro.build/config
 export default defineConfig({
   vite: {
     resolve: {
@@ -19,6 +18,7 @@ export default defineConfig({
         "layouts": fileURLToPath(new URL("./src/layouts", import.meta.url)),
         "styles": fileURLToPath(new URL("./src/styles", import.meta.url)),
         "data": fileURLToPath(new URL("./src/data", import.meta.url)),
+        "collections": fileURLToPath(new URL("./src/collections", import.meta.url)),
       },
     },
     plugins: [tailwindcss()],
