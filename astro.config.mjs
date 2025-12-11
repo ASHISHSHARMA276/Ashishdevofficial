@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from "astro/config";
+import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
@@ -9,9 +10,19 @@ import pagefind from "astro-pagefind";
 
 // https://astro.build/config
 export default defineConfig({
+  // Vite-level config used by Astro
   vite: {
+    // resolve alias so imports like "~/..." work
+    resolve: {
+      alias: {
+        "~": path.resolve("./src"),
+        "@": path.resolve("./src"),
+      },
+    },
     plugins: [tailwindcss()],
   },
+
+  // Markdown / MDX config (kept from your original)
   markdown: {
     syntaxHighlight: "shiki",
     shikiConfig: {
@@ -41,7 +52,11 @@ export default defineConfig({
       ],
     ],
   },
+
+  // Integrations (kept from your original)
   integrations: [react(), mdx(), pagefind()],
+
+  // Redirects (kept from your original)
   redirects: {
     "/docs": "/docs/get-started/introduction",
     "/docs/get-started": "/docs/get-started/introduction",
