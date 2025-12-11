@@ -8,21 +8,33 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import pagefind from "astro-pagefind";
 
-// https://astro.build/config
+/**
+ * Astro config
+ * - Adds Vite resolve.alias entries so imports like:
+ *     ~/layouts/RootLayout.astro
+ *     layouts/RootLayout.astro
+ *     components/Button.astro
+ *   resolve to the right files under ./src
+ */
 export default defineConfig({
-  // Vite-level config used by Astro
   vite: {
-    // resolve alias so imports like "~/..." work
     resolve: {
       alias: {
+        // kept: ~ and @ for convenience
         "~": path.resolve("./src"),
         "@": path.resolve("./src"),
+
+        // common bare import aliases used in your codebase
+        "layouts": path.resolve("./src/layouts"),
+        "components": path.resolve("./src/components"),
+        "pages": path.resolve("./src/pages"),
+        "data": path.resolve("./src/data"),
+        "styles": path.resolve("./src/styles"),
       },
     },
     plugins: [tailwindcss()],
   },
 
-  // Markdown / MDX config (kept from your original)
   markdown: {
     syntaxHighlight: "shiki",
     shikiConfig: {
@@ -36,13 +48,12 @@ export default defineConfig({
       [
         rehypeAutolinkHeadings,
         {
-          behavior: "wrap", // Adds the link at the end of the heading
+          behavior: "wrap",
           properties: {
-            className: ["heading-link"], // Add a class for styling
+            className: ["heading-link"],
             "aria-hidden": "true",
           },
           content: {
-            // Optional: Use an SVG icon or text for the link
             type: "element",
             tagName: "span",
             properties: { className: ["icon", "icon-link"] },
@@ -53,10 +64,8 @@ export default defineConfig({
     ],
   },
 
-  // Integrations (kept from your original)
   integrations: [react(), mdx(), pagefind()],
 
-  // Redirects (kept from your original)
   redirects: {
     "/docs": "/docs/get-started/introduction",
     "/docs/get-started": "/docs/get-started/introduction",
