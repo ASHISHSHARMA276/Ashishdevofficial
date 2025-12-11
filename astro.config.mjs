@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from "astro/config";
+import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
@@ -10,8 +11,20 @@ import pagefind from "astro-pagefind";
 // https://astro.build/config
 export default defineConfig({
   vite: {
+    resolve: {
+      alias: {
+        "~": fileURLToPath(new URL("./src", import.meta.url)),
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+        "components": fileURLToPath(new URL("./src/components", import.meta.url)),
+        "layouts": fileURLToPath(new URL("./src/layouts", import.meta.url)),
+        "styles": fileURLToPath(new URL("./src/styles", import.meta.url)),
+        "data": fileURLToPath(new URL("./src/data", import.meta.url)),
+        "collections": fileURLToPath(new URL("./src/collections", import.meta.url))
+      },
+    },
     plugins: [tailwindcss()],
   },
+
   markdown: {
     syntaxHighlight: "shiki",
     shikiConfig: {
@@ -25,13 +38,12 @@ export default defineConfig({
       [
         rehypeAutolinkHeadings,
         {
-          behavior: "wrap", // Adds the link at the end of the heading
+          behavior: "wrap",
           properties: {
-            className: ["heading-link"], // Add a class for styling
+            className: ["heading-link"],
             "aria-hidden": "true",
           },
           content: {
-            // Optional: Use an SVG icon or text for the link
             type: "element",
             tagName: "span",
             properties: { className: ["icon", "icon-link"] },
@@ -41,7 +53,9 @@ export default defineConfig({
       ],
     ],
   },
+
   integrations: [react(), mdx(), pagefind()],
+
   redirects: {
     "/docs": "/docs/get-started/introduction",
     "/docs/get-started": "/docs/get-started/introduction",
