@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro.dev",
-    "build": "vite build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "dev:client": "vite dev --port 5000 --host 0.0.0.0 -c vite.custom.config.ts"
