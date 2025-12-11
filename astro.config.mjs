@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import path from "node:path";
+import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
@@ -8,28 +8,17 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import pagefind from "astro-pagefind";
 
-/**
- * Astro config
- * - Adds Vite resolve.alias entries so imports like:
- *     ~/layouts/RootLayout.astro
- *     layouts/RootLayout.astro
- *     components/Button.astro
- *   resolve to the right files under ./src
- */
+// https://astro.build/config
 export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        // kept: ~ and @ for convenience
-        "~": path.resolve("./src"),
-        "@": path.resolve("./src"),
-
-        // common bare import aliases used in your codebase
-        "layouts": path.resolve("./src/layouts"),
-        "components": path.resolve("./src/components"),
-        "pages": path.resolve("./src/pages"),
-        "data": path.resolve("./src/data"),
-        "styles": path.resolve("./src/styles"),
+        "~": fileURLToPath(new URL("./src", import.meta.url)),
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+        "components": fileURLToPath(new URL("./src/components", import.meta.url)),
+        "layouts": fileURLToPath(new URL("./src/layouts", import.meta.url)),
+        "styles": fileURLToPath(new URL("./src/styles", import.meta.url)),
+        "data": fileURLToPath(new URL("./src/data", import.meta.url)),
       },
     },
     plugins: [tailwindcss()],
